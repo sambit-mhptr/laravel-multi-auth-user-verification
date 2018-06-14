@@ -1,0 +1,50 @@
+                                    STEPS
+
+1.Edit Auth file: 	
+Edit the auth file in config folder and define the authentication guards for the new type of user i.e, admin.
+
+Define the providers with database drivers for the new guard.
+
+Define the password reset details with expiration timing.
+
+These guards act as middlewares to protect the application from un authenticated access by the guest.("auth:admin" and by default the guard is web guard)
+
+2.Make the admin model(By copying the default user model and renaming it) and admins migration file(Fields may be same as user migration file) and migrate the database and create auth for the user with just a single command.
+
+3.Create controller and view files similar to that of user, for loading the	admin dashboard/home page. (AdminHomeController.php admin-home.blade.php) in controller the guard may be defined in construct function or in the route file.
+
+
+4.Create AdminLoginController.php to load the login view for the admin alike the user. Here, view will be loaded with get request and then with post request form fields will be validated, attempt to login with auth facade(Auth::attempt()) and redirect to intended or if fails then redirect back, logout function will also be declared there.
+
+5. Edit the exception handler.php file at dir. "app\exceptions\handler.php" and RedirectIfAuthenticated.php file at dir "app\hhtp\middleware\RedirectIfAuthenticated.php".
+
+The exception handler file receives a error exception thrown by the auth middleware as specified in the "app\kernel.php", when an un authenticated request was made by guest.
+
+The RedirectIfAuthenticated file redirects the user(authenticated or already logged in user), if he tries to visit the respective login page or i.e,if he tries to authenticate again.
+  
+
+6.create route to load the admin-home.blade view but protected by the guard as the middleware (auth:admin).
+
+create get route to load the login view but protected by guest:admin middleware.
+
+create post route to submit the user credentials  but protected by guest:admin middleware.
+
+create get route for the logout functionality  but not protected by guest:admin middleware, this can be achieved by adding extra parameter "except" at the controller.
+
+
+
+
+
+
+
+Notifications
+
+
+className -> error() method for a negative notification.
+className -> subject() method to give a subject for the notification.
+className -> view('name',[params]) to render a custom template.
+
+
+
+
+	   
